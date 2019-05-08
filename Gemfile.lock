@@ -1,3 +1,11 @@
+PATH
+  remote: .
+  specs:
+    recommendation (0.1.0)
+      pry
+      redis
+      rubocop-performance
+
 GEM
   remote: https://gems.ruby-china.com/
   specs:
@@ -49,7 +57,7 @@ GEM
       rspec-mocks (~> 3.8.0)
     rspec-core (3.8.0)
       rspec-support (~> 3.8.0)
-    rspec-expectations (3.8.2)
+    rspec-expectations (3.8.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-mocks (3.8.0)
@@ -77,10 +85,8 @@ PLATFORMS
 
 DEPENDENCIES
   guard-rspec
-  pry
-  redis
+  recommendation!
   rubocop
-  rubocop-performance
 
 BUNDLED WITH
-   1.16.2
+   1.16.6
