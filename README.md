@@ -44,9 +44,9 @@ $ redis cli
 ```
 
 redis_keys 
-recommendation:similarity => 存储了所有文章的相似度
-recommendation:items      => 存储了所有的文章阅读数量
-recommendation:item_pairs => 存储了每一对文章被同一个用户阅读过的数量
+1. recommendation:similarity => 存储了所有文章的相似度
+2. recommendation:items      => 存储了所有的文章阅读数量
+3. recommendation:item_pairs => 存储了每一对文章被同一个用户阅读过的数量
 
 
 Sources / References
