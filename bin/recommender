@@ -2,23 +2,43 @@
 $LOAD_PATH << File.expand_path(File.expand_path('../../lib', __FILE__))
 require 'recommendation'
 require 'redis'
+require 'json'
 
 Recommendation.redis = Redis.new
+
+views = Recommendation::JaccardInputMatrix.new(redis_prefix: 'recommendation', action: 'views')
+similarity_matrix = Recommendation::SimilarityMatrix.new(redis_prefix: 'recommendation', action: 'similarity')
 
 # load the data
 data = File.read(Dir.pwd + '/bin/read_data.json')
 json_data = JSON.parse(data)
 
 buckets = Hash.new { |h,k| h[k] = [] }
-data.each do |datum|
+json_data.each do |datum|
   user_id = datum['user_id']
   article_id = datum['article_id']
   buckets[user_id] << article_id
 end
 
 # add views count in redis
+i = 0
 buckets.each do |user_id, articles|
   articles = articles[0..99]
-  views = Recommendation::JaccardInputMatrix.new(redis_prefix: 'recommendation', action: 'views')
-  views.add_set(articles)
+  views.count_items_views_in_redis(articles)
+  i += 1
+  if i % 100 == 0
+    puts "processing #{i} #{user_id} => #{articles}"
+  end
+end
+
+# caculate similarities
+all_items = views.all_items
+num_all_items = all_items.size
+all_items.each_with_index do |item, n|
+  puts "processing #{n}/#{num_all_items}"
+  neighbors = views.similarities_for(item).map do |item, weight|
+    [item, weight]
+  end
+  similarity_matrix.update(item, neighbors)
+  similarity_matrix.commit_item!(item)
 end
