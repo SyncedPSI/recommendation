@@ -36,8 +36,8 @@ all_items = views.all_items
 num_all_items = all_items.size
 all_items.each_with_index do |item, n|
   puts "processing #{n}/#{num_all_items}"
-  neighbors = views.similarities_for(item).map do |item, weight|
-    [item, weight]
+  neighbors = views.similarities_for(item).map do |sitem, weight|
+    [sitem, weight]
   end
   similarity_matrix.update(item, neighbors)
   similarity_matrix.commit_item!(item)
