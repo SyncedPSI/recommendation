@@ -9,8 +9,8 @@ module Recommendation
     end
 
     def redis
-      return nil if config.nil?
-      @redis ||= config.redis
+      raise NoConfigureError, 'redis not configured! - Recommendation.configure { |config| config.redis = Redis.new } ' if config&.redis.nil?
+      @redis ||= config.redis 
     end
 
     def key_expired
@@ -27,5 +27,8 @@ module Recommendation
 
   class Config
     attr_accessor :redis, :rest_client_options, :key_expired
+  end
+
+  class NoConfigureError < StandardError
   end
 end

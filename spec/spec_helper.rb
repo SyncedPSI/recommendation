@@ -17,7 +17,7 @@ require 'recommendation'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 def initialize_redis!
-  Recommendation.redis = Redis.new
+  Recommendation.configure { |config| config.redis = Redis.new }
   Recommendation.redis.keys('recommendation_test*').each do |key|
     Recommendation.redis.del(key)
   end

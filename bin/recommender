@@ -4,7 +4,7 @@ require 'recommendation'
 require 'redis'
 require 'json'
 
-Recommendation.redis = Redis.new
+Recommendation.configure { |config| config.redis = Redis.new } 
 
 views = Recommendation::JaccardInputMatrix.new(redis_prefix: 'recommendation', action: 'views')
 similarity_matrix = Recommendation::SimilarityMatrix.new(redis_prefix: 'recommendation', action: 'similarity')
